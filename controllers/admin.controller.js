@@ -5,7 +5,7 @@ module.exports.addStudent = async (req, res) => {
     try {
         if (req.user && req.user.role == 'admin') {
             let { name, role, phone_no: phone_number, email} = req.body;
-            if(!validator.validateMobileNumber(phone_no)){
+            if(!validator.validateMobileNumber(phone_number)){
                 return res.status(400).send({ status: 400, message: `Invalid phone_no` })
             }
             if(!validator.validateEmail(email)){
