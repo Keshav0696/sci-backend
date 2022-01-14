@@ -7,5 +7,5 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.use('/admin',auth.authenticateToken, adminRoutes);
+router.use('/admin', adminRoutes);
 module.exports = router;
