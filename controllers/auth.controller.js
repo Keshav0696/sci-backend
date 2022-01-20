@@ -12,7 +12,7 @@ module.exports.login = async (req, res) => {
     let body = { email, password };
     for (var p in body) {
         if (!body[p]) {
-            return res.status(400).send({ status: 400, message: `Please send ${p}` })
+            return res.send({ status: 400, message: `Please send ${p}` })
         }
     }
     User.findOne({ email: email }, { password: 1 })
@@ -20,7 +20,7 @@ module.exports.login = async (req, res) => {
         .then(function (user) {
             bcrypt.compare(password, user.password, (err, result) => {
                 if (err) {
-                    return res.status(401).send('error');
+                    return res.send('error');
                 }
                 if (result) {
                     const token = jwt.sign({
@@ -28,16 +28,16 @@ module.exports.login = async (req, res) => {
                         _id: user._id
                     },
                         process.env.TOKEN_SECRET);
-                    return res.status(200).json({
+                    return res.json({
                         success: 'jwt',
                         token: token
                     });
                 }
-                return res.status(401).send('Problem with login');
+                return res.send('Problem with login');
             });
         })
         .catch(err => {
-            res.status(401).send(err);
+            res.send(err);
         });
 }
 
@@ -48,7 +48,7 @@ module.exports.sendOtp = async (req, res) => {
         let body = { phone_no };
         for (var p in body) {
             if (!body[p]) {
-                return res.status(400).send({ status: 400, message: `Please send ${p}` })
+                return res.send({ status: 400, message: `Please send ${p}` })
             }
         }
         const newOtp = Math.floor(1000 + Math.random() * 9000);
@@ -61,7 +61,7 @@ module.exports.sendOtp = async (req, res) => {
     
         let user_create = await User.findOneAndUpdate({ phone_number: phone_no, status: 0 }, { $set: {  otp: newOtp } }, { new: true });
         if(!user_create){
-            return res.status(404).send({status:400, message : "Invalid phone_number"})
+            return res.send({status:400, message : "Invalid phone_number"})
         }
         res.send({
             status: 200,
@@ -70,7 +70,7 @@ module.exports.sendOtp = async (req, res) => {
         });
     }
     catch (e) {
-        return res.status(400).send({ status: 400, message: e.message })
+        return res.send({ status: 400, message: e.message })
     }
 }
 module.exports.verifyOtp = async (req, res) => {
@@ -78,7 +78,7 @@ module.exports.verifyOtp = async (req, res) => {
     let body = { phone_no, otp };
     for (var p in body) {
         if (!body[p]) {
-            return res.status(400).send({ status: 400, message: `Please send ${p}` })
+            return res.send({ status: 400, message: `Please send ${p}` })
         }
     }
     let user = await User.findOne({ phone_number: req.body.phone_no, otp: req.body.otp, status: 0 })
