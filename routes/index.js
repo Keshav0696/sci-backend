@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var adminRoutes = require('./admin');
-var userRoutes = require('./user');
+var userRoutes = require('./users');
 var authRoutes = require('./auth');
 var auth = require('../middleware/auth');
 /* GET home page. */
