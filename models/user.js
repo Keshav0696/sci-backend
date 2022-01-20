@@ -25,7 +25,10 @@ var UserSchema = new Schema({
         type:String,
         default:'',
     },
- 
+    class_id : {
+        type : Schema.Types.ObjectId,
+        ref : "class"
+    },
     role:{
         type:String,
         enum : ['student', 'teacher', 'admin'],
