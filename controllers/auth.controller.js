@@ -5,10 +5,9 @@ const jwt = require("jsonwebtoken");
 const validOptions = { apikey: process.env.TEXTLOCALKEY };
 const tl = require('textlocal')(validOptions); 
  
-const client = require('twilio')(
-    process.env.TWILIO_ACCOUNT_SID,
-    process.env.TWILIO_AUTH_TOKEN
-);
+var http = require('http');
+var urlencode = require('urlencode');
+
 module.exports.login = async (req, res) => {
     let { email, password } = req.body;
     let body = { email, password };
@@ -54,20 +53,34 @@ module.exports.sendOtp = async (req, res) => {
             }
         }
         const newOtp = Math.floor(1000 + Math.random() * 9000);
-        tl.sendSMS(phone_no, newOtp, 'Sender', function (err, data) {
-            if (err) throw new Error(err.message);
-
-        });
-    
         let user_create = await User.findOneAndUpdate({ phone_number: phone_no, status: 0 }, { $set: {  otp: newOtp } }, { new: true });
         if(!user_create){
             return res.send({status:400, message : "Invalid phone_number"})
         }
-        res.send({
-            status: 200,
-            message: 'Otp sent! Valid only for 2 minutes',
-            data: {},
-        });
+        var msg=urlencode(`Hi there, thank you for sending your first test message from Textlocal. Get 20% off today with our code: ${newOtp}.`);
+        var number=phone_no;
+        var username='faisalgulzar11@gmail.com';
+        var hash=process.env.SENDER_HASH; // The hash key could be found under Help->All Documentation->Your hash key. Alternatively you can use your Textlocal password in plain text.
+        var sender=process.env.SENDER_ID;
+        var data='username='+username+'&hash='+hash+'&sender='+sender+'&numbers='+number+'&message='+msg
+        var options = {
+         host: 'api.textlocal.in',
+         path: '/send?'+data
+        };
+        callback = function(response) {
+          var str = '';
+          //another chunk of data has been recieved, so append it to `str`
+          response.on('data', function (chunk) {
+          str += chunk;
+          });
+          //the whole response has been recieved, so we just print it out here
+          response.on('end', function () {
+          res.send(str);
+          });
+        }
+        //console.log('hello js'))
+        http.request(options, callback).end();
+  
     }
     catch (e) {
         return res.send({ status: 400, message: e.message })
