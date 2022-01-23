@@ -57,6 +57,7 @@ module.exports.sendOtp = async (req, res) => {
         if(!user_create){
             return res.send({status:400, message : "Invalid phone_number"})
         }
+        
         var msg=urlencode(`Hi there, thank you for sending your first test message from Textlocal. Get 20% off today with our code: ${newOtp}.`);
         var number=phone_no;
         var username='faisalgulzar11@gmail.com';
