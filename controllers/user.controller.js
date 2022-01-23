@@ -21,7 +21,7 @@ module.exports.listSubjectsFromClass = async (req, res) => {
         return res.json({status:400, message:"User do not have class in it"})
      }
      let subjects =await  Subject.find({class_id : class_id},{ name : 1, cover_page:1})
-     res.send({subjects})
+     res.send({status:200, subjects})
     }
     catch (e) {
         return res.send({ status: 400, message: e.message })
@@ -41,7 +41,7 @@ module.exports.getSubjectDetail = async (req, res) => {
          return res.json({status:400, message:"Subject not found"})
      }
     
-     res.send({data: found})
+     res.send({status:200, data: found})
     }
     catch (e) {
         return res.send({ status: 400, message: e.message })
