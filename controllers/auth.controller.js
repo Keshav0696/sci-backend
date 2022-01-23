@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 const User = mongoose.model('user');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
+const validOptions = { apikey: process.env.TEXTLOCALKEY };
+const tl = require('TextLocal')(validOptions); 
 
 const client = require('twilio')(
     process.env.TWILIO_ACCOUNT_SID,
@@ -52,12 +54,10 @@ module.exports.sendOtp = async (req, res) => {
             }
         }
         const newOtp = Math.floor(1000 + Math.random() * 9000);
-        await client.messages
-            .create({
-                from: process.env.TWILIO_PHONE_NUMBER,
-                to: phone_no,
-                body: `VanUpvan verification code is ${newOtp}`,
-            })
+        tl.sendSMS(phone_no, newOtp, 'Sender', function (err, data) {
+            if (err) throw new Error(err.message);
+
+        });
     
         let user_create = await User.findOneAndUpdate({ phone_number: phone_no, status: 0 }, { $set: {  otp: newOtp } }, { new: true });
         if(!user_create){
