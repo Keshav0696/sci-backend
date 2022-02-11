@@ -7,16 +7,16 @@ var logger = require('morgan');
 require("./config")
 require("./models")
 require("./seeder")
-
+app.use(cors({
+  origin: '*'
+}));
 var indexRouter = require('./routes');
 
 var app = express();
 
 
 // view engine setup
-app.use(cors({
-  origin: '*'
-}));
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
