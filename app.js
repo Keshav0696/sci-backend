@@ -7,12 +7,13 @@ var logger = require('morgan');
 require("./config")
 require("./models")
 require("./seeder")
+var app = express();
+
 app.use(cors({
   origin: '*'
 }));
 var indexRouter = require('./routes');
 
-var app = express();
 
 
 // view engine setup
