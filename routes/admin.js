@@ -5,6 +5,9 @@ const adminController =  require("../controllers/admin.controller")
 router.post('/addStudent', adminController.addStudent);
 router.post('/addSubject', adminController.addSubject);
 router.post('/addClass', adminController.addClass);
+router.get('/getProfile', adminController.getProfile);
+router.get('/getAllStudents', adminController.getAllStudents);
+router.get('/getAllClasses', adminController.getAllClasses);
 
 
 module.exports = router;
