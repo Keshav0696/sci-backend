@@ -120,7 +120,7 @@ module.exports.addSubject = async (req, res) => {
 module.exports.getAllSubjects = async (req, res) => {
     try {
         if (req.user && req.user.role == 'admin') {
-            let subjects = await Subject.find({});
+            let subjects = await Subject.find({}).populate("class_id");
                 res.send({ status: 200, message: "Subject added successfully", data: subjects })
             
         } else {
