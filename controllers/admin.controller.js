@@ -116,6 +116,21 @@ module.exports.addSubject = async (req, res) => {
         return res.send({ status: 400, message: e.message })
     }
 }
+
+module.exports.getAllSubjects = async (req, res) => {
+    try {
+        if (req.user && req.user.role == 'admin') {
+            let subjects = await Subject.find({});
+                res.send({ status: 200, message: "Subject added successfully", data: subjects })
+            
+        } else {
+            res.send({ status: 400, message: "You don't have access" })
+        }
+    }
+    catch (e) {
+        return res.send({ status: 400, message: e.message })
+    }
+}
 // module.exports.listClasses = async (req, res) => {
 //     try {
 //         let found = await Class.find({  });

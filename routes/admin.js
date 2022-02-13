@@ -8,6 +8,7 @@ router.post('/addClass', adminController.addClass);
 router.get('/getProfile', adminController.getProfile);
 router.get('/getAllStudents', adminController.getAllStudents);
 router.get('/getAllClasses', adminController.getAllClasses);
+router.get('/getAllSubjects', adminController.getAllSubjects);
 
 
 module.exports = router;
