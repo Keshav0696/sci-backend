@@ -48,7 +48,7 @@ module.exports.addStudent = async (req, res) => {
 module.exports.getAllStudents = async (req, res) => {
     try {
         if (req.user && req.user.role == 'admin') {
-          let all_students = await User.find({role : "student"}).populate("class_id");
+          let all_students = await User.find({role : "student"}).sort({createdAt:-1}).populate("class_id");
           res.send({status :200, data :all_students});
         } else {
             res.send({ status: 400, message: "You don't have access" })
@@ -120,7 +120,7 @@ module.exports.addSubject = async (req, res) => {
 module.exports.getAllSubjects = async (req, res) => {
     try {
         if (req.user && req.user.role == 'admin') {
-            let subjects = await Subject.find({}).populate("class_id");
+            let subjects = await Subject.find({}).sort({createdAt:-1}).populate("class_id");
                 res.send({ status: 200, message: "Subject added successfully", data: subjects })
             
         } else {
