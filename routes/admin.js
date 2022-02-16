@@ -9,6 +9,7 @@ router.get('/getProfile', adminController.getProfile);
 router.get('/getAllStudents', adminController.getAllStudents);
 router.get('/getAllClasses', adminController.getAllClasses);
 router.get('/getAllSubjects', adminController.getAllSubjects);
+router.get('/getSubjectById/:id', adminController.getSubjectById);
 
 
 module.exports = router;
